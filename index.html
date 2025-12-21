@@ -211,7 +211,14 @@
                 formData[field.name] = input ? input.value : '';
             });
             formData.timestamp = new Date().toISOString();
-            tg.sendData(JSON.stringify(formData));
+            
+            // Enviar mediante answerWebAppQuery si está disponible
+            if (tg.initDataUnsafe.query_id) {
+                tg.sendData(JSON.stringify(formData));
+            } else {
+                // Fallback: mostrar alerta con los datos
+                tg.showAlert('Datos guardados: ' + JSON.stringify(formData));
+            }
             tg.close();
         });
 
