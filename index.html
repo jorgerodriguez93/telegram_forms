@@ -212,6 +212,7 @@
             });
             formData.timestamp = new Date().toISOString();
             tg.sendData(JSON.stringify(formData));
+            tg.close();
         });
 
         // Validación en tiempo real
