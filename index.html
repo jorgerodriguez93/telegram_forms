@@ -206,11 +206,14 @@
         tg.MainButton.show();
         tg.MainButton.enable();
         tg.MainButton.onClick(function() {
+            alert('Botón clickeado'); // Debug
             const formData = {};
             fields.forEach(field => {
                 const input = document.getElementById(field.name);
                 formData[field.name] = input ? input.value : '';
             });
+            
+            alert('Datos: ' + JSON.stringify(formData)); // Debug
             
             // Enviar datos a través de Telegram WebApp
             tg.sendData(JSON.stringify(formData));
