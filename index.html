@@ -121,7 +121,12 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
         
-        // Parsear campos desde URL (formato: fields=[{"name":"campo1","label":"Nombre","type":"text","value":"Juan","required":true}])
+        // Obtener message_id del mensaje actual desde initDataUnsafe
+        const initData = tg.initDataUnsafe;
+        const messageId = initData?.message?.message_id;
+        const chatId = initData?.message?.chat?.id;
+        
+        // Parsear campos desde URL
         const urlParams = new URLSearchParams(window.location.search);
         let fields = [];
         
@@ -214,6 +219,8 @@
             });
             
             formData._source = 'correction_form';
+            if (messageId) formData.message_id = messageId;
+            if (chatId) formData.chat_id = chatId;
             
             tg.MainButton.showProgress();
             
