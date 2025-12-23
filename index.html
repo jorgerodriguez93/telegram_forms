@@ -204,6 +204,7 @@
         // Configurar botón principal
         tg.MainButton.text = "💾 Guardar Cambios";
         tg.MainButton.show();
+        tg.MainButton.enable();
         tg.MainButton.onClick(function() {
             const formData = {};
             fields.forEach(field => {
@@ -214,19 +215,6 @@
             // Enviar datos a través de Telegram WebApp
             tg.sendData(JSON.stringify(formData));
         });
-
-        // Validación en tiempo real
-        form.addEventListener('input', function() {
-            const allValid = Array.from(form.querySelectorAll('[required]')).every(input => input.value.trim());
-            if (allValid) {
-                tg.MainButton.enable();
-            } else {
-                tg.MainButton.disable();
-            }
-        });
-
-        // Trigger inicial de validación
-        form.dispatchEvent(new Event('input'));
     </script>
 </body>
 </html>
