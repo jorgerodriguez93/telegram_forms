@@ -202,21 +202,41 @@
         }
 
         // Configurar botón principal
-        tg.MainButton.text = "💾 Guardar Cambios";
-        tg.MainButton.show();
+        tg.MainButton.setText("💾 Guardar Cambios");
         tg.MainButton.enable();
-        tg.MainButton.onClick(function() {
-            alert('Botón clickeado'); // Debug
+        tg.MainButton.show();
+        
+        tg.onEvent('mainButtonClicked', function() {
             const formData = {};
             fields.forEach(field => {
                 const input = document.getElementById(field.name);
-                formData[field.name] = input ? input.value : '';
+                if (input) formData[field.name] = input.value;
             });
             
-            alert('Datos: ' + JSON.stringify(formData)); // Debug
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                formData._tg_user_id = tg.initDataUnsafe.user.id;
+                formData._tg_username = tg.initDataUnsafe.user.username;
+            }
             
-            // Enviar datos a través de Telegram WebApp
-            tg.sendData(JSON.stringify(formData));
+            tg.MainButton.showProgress();
+            
+            fetch('https://jorge-server.online/webhook/b22fcea3-f4a6-4af5-a952-43eef125bfde', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                tg.MainButton.hideProgress();
+                if (response.ok) {
+                    tg.close();
+                } else {
+                    tg.showAlert("Error: " + response.status);
+                }
+            })
+            .catch(error => {
+                tg.MainButton.hideProgress();
+                tg.showAlert("Error: " + error.message);
+            });
         });
     </script>
 </body>
