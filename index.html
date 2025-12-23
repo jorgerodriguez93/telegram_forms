@@ -213,10 +213,7 @@
                 if (input) formData[field.name] = input.value;
             });
             
-            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                formData._tg_user_id = tg.initDataUnsafe.user.id;
-                formData._tg_username = tg.initDataUnsafe.user.username;
-            }
+            formData._source = 'correction_form';
             
             tg.MainButton.showProgress();
             
